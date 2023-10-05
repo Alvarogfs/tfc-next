@@ -3,12 +3,11 @@ import PokemonCard from '@/components/PokemonCard';
 import { getList } from '@/utils/api';
 import { useQuery, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 export default function Home() {
-  const {data: pokemonList, isFetching} = useQuery({
+  const {data: pokemonList, isLoading} = useQuery({
     queryKey: ['pokemonList'],
     queryFn: getList
   });
-  console.log({pokemonList});
-  if(isFetching){
+  if(isLoading){
     return <div>loading</div>
   }
 return(
