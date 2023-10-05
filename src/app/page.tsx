@@ -1,4 +1,5 @@
 "use client"
+import PokemonCard from '@/components/PokemonCard';
 import { getList } from '@/utils/api';
 import { useQuery, QueryClient, QueryClientProvider } from '@tanstack/react-query'
 export default function Home() {
@@ -12,7 +13,9 @@ export default function Home() {
   }
 return(
   <main>
-    { pokemonList?.map((el) => <div key={el.name}>{el.name}<img src={el.url}></img></div>) }
+    <div className="grid xl:grid-cols-6 gap-6 mx-8 sm:grid-cols-1 justify-center items-center md:grid-cols-3 my-7">
+    { pokemonList?.map((el) => <PokemonCard key={el.name} pokemon={el}></PokemonCard>) }
+    </div>
   </main>
 )
 }
