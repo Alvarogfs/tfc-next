@@ -97,7 +97,7 @@ export interface Sprites {
     front_female:       null;
     front_shiny:        string;
     front_shiny_female: null;
-    other?:             Other;
+    other:             Other;
     versions?:          Versions;
     animated?:          Sprites;
 }
@@ -189,3 +189,4 @@ export interface Type {
     slot: number;
     type: Species;
 }
+export const TYPES = ["normal", "fighting", "flying", "poison", "ground", "rock", "bug", "ghost", "steel", "fire", "water", "grass", "electric", "psychic", "ice", "dragon", "dark", "fairy", "unknown"] as const
