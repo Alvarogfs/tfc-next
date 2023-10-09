@@ -14,7 +14,7 @@ export const getList = async () => {
     })
     return response.data.results.map((el, index)=> ({...el, url: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${index+1}.png`}))
 }
-export const getByName = async (name: string) =>{
+export const getPokemon = async (name: string) =>{
     const response = await api.get<Pokemon>(`pokemon/${name}`)
     return response.data
 }

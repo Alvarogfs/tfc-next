@@ -1,7 +1,7 @@
 "use client"
 import PokemonCard from '@/components/PokemonCard';
 import { getList } from '@/utils/api';
-import { useQuery, QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { useQuery  } from '@tanstack/react-query'
 export default function Home() {
   const {data: pokemonList, isLoading} = useQuery({
     queryKey: ['pokemonList'],
