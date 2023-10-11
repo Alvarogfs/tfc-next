@@ -5,10 +5,10 @@ const api = axios.create({
     baseURL: "https://pokeapi.co/api/v2/",
 })
 
-export const getList = async () => {
+export const getList = async (limit: number) => {
     const response = await api.get<Pokedex>("pokemon", {
         params : {
-            limit: 151,
+            limit,
             offset: 0
         }
     })
