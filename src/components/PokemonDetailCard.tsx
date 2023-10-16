@@ -32,6 +32,20 @@ const borderColor = getBorderColor(pokemon.types[0].type.name)
         <h5 className="text-center font-bold">Types</h5>
         <div className="flex flex-row justify-center gap-3 bg-white rounded-lg p-2"> {pokemon.types.map((type) =>  <TypeBadge key={type.slot} pokemonType={type.type}></TypeBadge>) }</div>
       </div>
+      <div className="flex flex-row justify-evenly gap-2 text-center">
+        <div className="w-full">
+          <h5 className="text-center font-bold">Height</h5>
+          <div className="bg-white rounded-lg p-2">
+            {(pokemon.height/10).toLocaleString("es-ES", { minimumFractionDigits: 1 })} m
+          </div>
+        </div>
+        <div className="w-full">
+        <h5 className="text-center font-bold">Weight</h5>
+        <div className="bg-white rounded-lg p-2">
+        {(pokemon.weight/10).toLocaleString("es-ES", { minimumFractionDigits: 1 })} kg
+        </div>
+        </div>
+      </div>
     </div>
   );
 };
