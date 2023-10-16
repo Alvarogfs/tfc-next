@@ -88,9 +88,9 @@ const Details: FC<{ params: { name: string } }> = async ({ params }) => {
           <th className="w-32 px-2"><div className="flex flex-row justify-between w-full"><span>SP Atk: </span><span>{stats.special_attack}</span></div></th>
             <td><div style={{width: `${stats.special_attack*100/255}%`}} className={`bg-blue-400 h-full border-2 border-blue-500`}></div></td>
           </tr>
-          <tr className="bg-green-500">
+          <tr className="bg-green-600">
           <th className="w-32 px-2"><div className="flex flex-row justify-between w-full"><span>SP Def: </span><span>{stats.special_defense}</span></div></th>
-            <td><div style={{width: `${stats.special_defense*100/255}%`}} className={`bg-green-600 h-full border-2 border-green-700`}></div></td>
+            <td><div style={{width: `${stats.special_defense*100/255}%`}} className={`bg-green-700 h-full border-2 border-green-800`}></div></td>
           </tr>
           <tr className="bg-rose-300">
           <th className="w-32 px-2"><div className="flex flex-row justify-between w-full"><span>Speed: </span><span>{stats.speed}</span></div></th>
