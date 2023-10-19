@@ -1,7 +1,7 @@
 import Image from 'next/image'
 import React from 'react'
 import NavBarLink from './NavBarLink'
-import AuthButton from './AuthButton'
+import AuthButton from '../auth/AuthButton'
 import Link from 'next/link'
 import ColorSchemeToggleButton from './ColorSchemeToggleButton'
 

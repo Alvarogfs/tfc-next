@@ -1,4 +1,4 @@
-import PokemonDetailCard from "@/components/PokemonDetailCard";
+import PokemonDetailCard from "@/components/pokemon/PokemonDetailCard";
 import { PokemonStats } from "@/types/pokemon.types";
 import { getPokemon } from "@/utils/api";
 import { capitalize, getBorderColor, getColorType } from "@/utils/filters";

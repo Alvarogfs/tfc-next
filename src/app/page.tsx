@@ -1,5 +1,5 @@
 "use client";
-import PokemonCard from "@/components/PokemonCard";
+import PokemonCard from "@/components/pokemon/PokemonCard";
 import { getList } from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
 import { useState, useEffect } from "react";

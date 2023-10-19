@@ -2,7 +2,7 @@ import Providers from '@/providers'
 import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-import NavBar from '@/components/NavBar'
+import NavBar from '@/components/navbar/NavBar'
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { getCurrentScheme } from '@/utils/colorScheme'

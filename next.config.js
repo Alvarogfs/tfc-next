@@ -1,8 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images : {
-        remotePatterns : [{hostname: "raw.githubusercontent.com", protocol: "https", pathname: "/PokeAPI/**"}]
-    }
-}
+  images: {
+    remotePatterns: [
+      {
+        hostname: "raw.githubusercontent.com",
+        protocol: "https",
+        pathname: "/PokeAPI/**",
+      },
+      { hostname: "avatars.githubusercontent.com", protocol: "https" },
+    ],
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

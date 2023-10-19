@@ -18,6 +18,6 @@ export default function Providers({ children }: {children:any}) {
   )
 
   return (
-    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+   <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   )
 }
