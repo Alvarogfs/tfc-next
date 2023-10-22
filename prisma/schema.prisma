@@ -58,3 +58,9 @@ model VerificationToken {
 
   @@unique([identifier, token])
 }
+
+model PokemonFavouriteUser {
+  pokemonId  String
+  userId String
+  @@id([pokemonId, userId])
+}

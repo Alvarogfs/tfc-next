@@ -4,18 +4,33 @@ import Image from "next/image";
 import React, { FC } from "react";
 import TypeBadge from "./TypeBadge";
 import FavButton from "./FavButton";
+import prisma from "../../../prisma/prisma";
+import { auth } from "@/utils/auth";
 
-const PokemonDetailCard: FC<{ pokemon: Pokemon }> = ({ pokemon }) => {
+const PokemonDetailCard: FC<{ pokemon: Pokemon }> = async ({ pokemon }) => {
   const mainColor = getColorType(pokemon.types[0].type.name);
   const borderColor = getBorderColor(pokemon.types[0].type.name);
+  const session = await auth();
+  const isFavourited = session?.user?.id
+    ? await prisma.pokemonFavouriteUser.findUnique({
+        where: {
+          pokemonId_userId: {
+            pokemonId: pokemon.id.toString(),
+            userId: session?.user?.id,
+          },
+        },
+      })
+    : false;
   return (
     <div
       className={`max-w-sm ${mainColor} border-4 ${borderColor} rounded-lg shadow p-2 flex flex-col gap-2 pb-4`}
     >
       <div className="flex flex-row gap-2">
-        <div className="bg-white rounded-lg flex items-center px-2">
-          <FavButton id={pokemon.id}></FavButton>
-        </div>
+        {session && (
+          <div className="bg-white rounded-lg flex items-center px-2">
+            <FavButton toggled={!!isFavourited} id={pokemon.id}></FavButton>
+          </div>
+        )}
         <div className="bg-white rounded-lg flex-grow">
           <h5 className="p-2 text-2xl font-bold tracking-tight text-gray-900 text-center">
             {capitalize(pokemon.name)}

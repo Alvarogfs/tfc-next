@@ -4,7 +4,6 @@ import AuthDropdown from "./AuthDropdown";
 
 const AuthButton = async () => {
   const session = await auth();
-  console.log(session);
   if(session){
     const user = session.user as {
       name: string;
