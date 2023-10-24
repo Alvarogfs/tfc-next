@@ -1,3 +1,4 @@
+import PokemonCommentSection from "@/components/pokemon/comments/PokemonCommentSection";
 import PokemonDetailCard from "@/components/pokemon/PokemonDetailCard";
 import { PokemonStats } from "@/types/pokemon.types";
 import { getPokemon } from "@/utils/api";
@@ -44,7 +45,7 @@ const Details: FC<{ params: { name: string } }> = async ({ params }) => {
   })()
   return (
     <main className="flex flex-col justify-center container mx-auto gap-4 px-4">
-      <div className="flex flex-row">
+      <section className="flex flex-row">
         {pokemonBefore && pokemonBefore.id >= 1 && (
           <Link className={`p-2 rounded-lg ${getColorType(pokemonBefore.types[0].type.name)}`} href={`/details/${pokemonBefore.name}`}>
             <FontAwesomeIcon icon={faArrowLeft} /> #
@@ -63,8 +64,8 @@ const Details: FC<{ params: { name: string } }> = async ({ params }) => {
             - {capitalize(pokemonAfter.name)} <FontAwesomeIcon icon={faArrowRight} />
           </Link>
         )}
-      </div>
-      <div className="flex flex-col gap-8 md:flex-row items-center md:items-start">
+      </section>
+      <section className="flex flex-col gap-8 md:flex-row items-center md:items-start">
         <div>
           <PokemonDetailCard pokemon={pokemon}></PokemonDetailCard>
         </div>
@@ -103,7 +104,10 @@ const Details: FC<{ params: { name: string } }> = async ({ params }) => {
           </tbody>
         </table>
         </div>
-      </div>
+      </section>
+      <section>
+        <PokemonCommentSection pokemonId={pokemon.id.toString()}></PokemonCommentSection>
+      </section>
     </main>
   );
 };

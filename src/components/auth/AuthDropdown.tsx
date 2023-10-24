@@ -31,17 +31,17 @@ const AuthDropdown:FC<{
         {email}
       </span>
     </Dropdown.Header>
-    <Dropdown.Item className='dark:hover:text-black '>
+    <Dropdown.Item className='dark:hover:text-black hover:text-black'>
       Dashboard
     </Dropdown.Item>
-    <Dropdown.Item className='dark:hover:text-black '>
+    <Dropdown.Item className='dark:hover:text-black hover:text-black'>
       Settings
     </Dropdown.Item>
-    <Dropdown.Item className='dark:hover:text-black '>
+    <Dropdown.Item className='dark:hover:text-black hover:text-black'>
       Earnings
     </Dropdown.Item>
     <Dropdown.Divider />
-    <Dropdown.Item className='dark:hover:text-black ' onClick={() => handleSignOut()}>
+    <Dropdown.Item className='dark:hover:text-black hover:text-black' onClick={() => handleSignOut()}>
       Sign out
     </Dropdown.Item>
   </Dropdown>

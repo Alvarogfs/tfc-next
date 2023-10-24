@@ -30,3 +30,44 @@ export const toggleFavourite = async (pokemonId: string) =>{
         })
     }
 }
+export const postComment = async (pokemonId: string, comment: string)=>{
+    const session = await auth()
+    if(!session?.user.id){
+        throw new Error("No user detected")
+    }
+    await prisma.pokemonComment.create({
+        data: {
+            comment,
+            pokemonId,
+            authorId: session.user.id
+        }
+    })
+}
+export const likeComment = async (commentId: string)=>{
+    const session = await auth()
+    if(!session?.user.id){
+        throw new Error("No user detected")
+    }
+    const liked = await prisma.pokemonCommentLike.findUnique({
+        where: {
+            userId_commentId: {
+                commentId,
+                userId: session.user.id
+            }
+        }
+    })
+    if(liked){
+        await prisma.pokemonCommentLike.delete({
+            where: {
+                userId_commentId: liked
+            }
+        })
+    }else {
+        await prisma.pokemonCommentLike.create({
+            data: {
+                commentId,
+                userId: session.user.id
+            }
+        })
+    }
+}

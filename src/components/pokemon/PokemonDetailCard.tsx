@@ -22,7 +22,7 @@ const PokemonDetailCard: FC<{ pokemon: Pokemon }> = async ({ pokemon }) => {
       })
     : false;
   return (
-    <div
+    <section
       className={`max-w-sm ${mainColor} border-4 ${borderColor} rounded-lg shadow p-2 flex flex-col gap-2 pb-4`}
     >
       <div className="flex flex-row gap-2">
@@ -78,7 +78,7 @@ const PokemonDetailCard: FC<{ pokemon: Pokemon }> = async ({ pokemon }) => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
