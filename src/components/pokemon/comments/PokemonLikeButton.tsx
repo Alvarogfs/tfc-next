@@ -1,17 +1,37 @@
-"use client"
-import { likeComment } from '@/utils/actions'
-import { useRouter } from 'next/navigation'
-import React, { FC } from 'react'
+"use client";
+import { likeComment } from "@/utils/actions";
+import { faThumbsUp as faThumbsUpRegular } from "@fortawesome/free-regular-svg-icons";
+import { faThumbsUp as faThumbsUpSolid } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useRouter } from "next/navigation";
+import React, { FC } from "react";
 
-const PokemonLikeButton:FC<{commentId: string, likes: number}> = ({commentId, likes}) => {
-    const router = useRouter()
-    const handleClick = async () =>{
-        await likeComment(commentId)
-        router.refresh()
-    }
+const PokemonLikeButton: FC<{
+  commentId: string;
+  likes: number;
+  userLiked: boolean;
+  userLogged: boolean
+}> = ({ commentId, likes, userLiked, userLogged }) => {
+  const router = useRouter();
+  const handleClick = async () => {
+    if(!userLogged) return
+    await likeComment(commentId);
+    router.refresh();
+  };
   return (
-    <button onClick={handleClick} className="text-sm text-gray-600 dark:text-gray-400">+{likes}</button>
-  )
-}
+    <button
+      onClick={handleClick} 
+      className="text-sm text-gray-600 dark:text-gray-400"
+    >
+      {userLiked ? (
+        <FontAwesomeIcon icon={faThumbsUpSolid} />
+      ) : (
+        <FontAwesomeIcon icon={faThumbsUpRegular} />
+      )}
+      {" "}
+      {likes}
+    </button>
+  );
+};
 
-export default PokemonLikeButton
+export default PokemonLikeButton;

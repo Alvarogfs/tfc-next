@@ -47,7 +47,7 @@ const Details: FC<{ params: { name: string } }> = async ({ params }) => {
     <main className="flex flex-col justify-center container mx-auto gap-4 px-4">
       <section className="flex flex-row">
         {pokemonBefore && pokemonBefore.id >= 1 && (
-          <Link className={`p-2 rounded-lg ${getColorType(pokemonBefore.types[0].type.name)}`} href={`/details/${pokemonBefore.name}`}>
+          <Link className={`p-2 rounded-lg ${getColorType(pokemonBefore.types[0].type.name)}`} href={`/home/details/${pokemonBefore.name}`}>
             <FontAwesomeIcon icon={faArrowLeft} /> #
             {pokemonBefore.id.toLocaleString("es-ES", {
               minimumIntegerDigits: 4,
@@ -56,7 +56,7 @@ const Details: FC<{ params: { name: string } }> = async ({ params }) => {
           </Link>
         )}
         {pokemonAfter && pokemonAfter.id <= 151 && (
-          <Link className={`ms-auto p-2 rounded-lg ${getColorType(pokemonAfter.types[0].type.name)}`} href={`/details/${pokemonAfter.name}`}>
+          <Link className={`ms-auto p-2 rounded-lg ${getColorType(pokemonAfter.types[0].type.name)}`} href={`/home/details/${pokemonAfter.name}`}>
             #
             {pokemonAfter.id.toLocaleString("es-ES", {
               minimumIntegerDigits: 4,

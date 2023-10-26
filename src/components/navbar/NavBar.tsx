@@ -33,7 +33,7 @@ const NavBar = () => {
             <NavBarLink href="/about" >About</NavBarLink>
           </li>
           <li>
-          <NavBarLink href="/favourites">Favourites</NavBarLink>
+          <NavBarLink href="/home/favourites">Favourites</NavBarLink>
           </li>
         </ul>
       </div>

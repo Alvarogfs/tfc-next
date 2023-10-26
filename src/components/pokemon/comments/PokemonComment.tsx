@@ -3,12 +3,15 @@ import React, { FC } from "react";
 import Image from "next/image";
 import { likeComment } from "@/utils/actions";
 import PokemonLikeButton from "./PokemonLikeButton";
+import { auth } from "@/utils/auth";
 
 const PokemonComment: FC<{
   comment: PokemonComment;
   author: User;
   likes: number;
-}> = ({ comment, author, likes }) => {
+  userLiked: boolean
+}> = async({ comment, author, likes, userLiked }) => {
+  const session = await auth()
   return (
     <article className="p-6 text-base ">
       <footer className="flex justify-between items-center mb-2">
@@ -31,7 +34,7 @@ const PokemonComment: FC<{
         </div>
       </footer>
       <p className="text-gray-500 dark:text-gray-400">{comment.comment}</p>
-      <PokemonLikeButton commentId={comment.id} likes={likes}></PokemonLikeButton>
+      <PokemonLikeButton userLiked={userLiked} commentId={comment.id} likes={likes} userLogged={!!session?.user}></PokemonLikeButton>
     </article>
   );
 };
