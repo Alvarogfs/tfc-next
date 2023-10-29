@@ -1,6 +1,7 @@
 "use server"
 import prisma from "../../prisma/prisma"
 import { auth } from "./auth"
+import bcrypt from "bcrypt"
 
 export const toggleFavourite = async (pokemonId: string) =>{
     const session = await auth()
@@ -70,4 +71,20 @@ export const likeComment = async (commentId: string)=>{
             }
         })
     }
+}
+export const registerUser = async(email: string, name: string, password: string)=>{
+    const existingUser = await prisma.user.findFirst({
+        where: {
+            email
+        }
+    })
+    if(existingUser) throw new Error("exists")
+    const hashPassword = await bcrypt.hash(password, 10)
+    await prisma.user.create({
+        data: {
+            name,
+            email,
+            password: hashPassword
+        }
+    })
 }

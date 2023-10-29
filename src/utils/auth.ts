@@ -9,6 +9,8 @@ import { getServerSession } from "next-auth";
 import GitHubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from "../../prisma/prisma";
+import bcrypt from "bcrypt";
+import { User } from "@prisma/client";
 const GITHUB_ID = process.env.GITHUB_ID as string;
 const GITHUB_SECRET = process.env.GITHUB_SECRET as string;
 
@@ -30,32 +32,29 @@ export const config = {
   providers: [
     CredentialsProvider({
       credentials: {
-        username: { label: "Username" },
-        password: { label: "Password", type: "password" }
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
       },
+      // @ts-ignore
       async authorize(credentials) {
-        const authResponse = await fetch("/users/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(credentials),
-        });
-
-        if (!authResponse.ok) {
-          return null;
+        try {
+          const user = await prisma.user.findUniqueOrThrow({
+            where: {
+              email: credentials?.email,
+            },
+          });
+          if (!(await bcrypt.compare(credentials?.password!, user.password!)))
+            return null;
+          return { id: user.id, name: user.name, email: user.email, image: null };
+        } catch (error) {
+          return null
         }
-
-        const user = await authResponse.json();
-
-        return user;
       },
     }),
     GitHubProvider({
       clientId: GITHUB_ID,
       clientSecret: GITHUB_SECRET,
-    })
-
+    }),
   ],
 } satisfies NextAuthOptions;
 
