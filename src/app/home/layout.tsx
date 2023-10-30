@@ -6,6 +6,8 @@ import NavBar from '@/components/navbar/NavBar'
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { getCurrentScheme } from '@/utils/colorScheme'
+import CookieConsent from '@/components/CookieConsent'
+import { cookies } from 'next/headers'
 config.autoAddCss = false;
 
 const inter = Inter({ subsets: ['latin'] })
@@ -27,6 +29,8 @@ export default async function RootLayout({
         <Providers>
         <NavBar></NavBar> <div className="mt-28 ">{children}</div>
         </Providers>
+        {!cookies().has("cookieConsent") && <CookieConsent></CookieConsent>}
+
         </body>
     </html>
   )

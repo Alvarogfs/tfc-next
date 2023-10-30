@@ -18,6 +18,9 @@ export const config = {
   session: {
     strategy: "jwt",
   },
+  pages: {
+    signIn: "/login"
+  },
   callbacks: {
     session({ session, token }) {
       if (session?.user) {
