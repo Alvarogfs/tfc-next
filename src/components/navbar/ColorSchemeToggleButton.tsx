@@ -15,7 +15,7 @@ const toggle = async () => {
     <button
       type="button"
       aria-label="Toggle dark mode"
-      className="py-1 px-3 bg-zinc-900 dark:bg-zinc-100 rounded-full"
+      className="py-1 px-3 bg-zinc-900 dark:bg-zinc-100 rounded-full w-10 h-10"
       onClick={toggle}
     >
       <span className="inline-block text-sm dark:hidden text-zinc-100">

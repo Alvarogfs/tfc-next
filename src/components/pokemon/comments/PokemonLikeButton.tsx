@@ -3,7 +3,6 @@ import { likeComment } from "@/utils/actions";
 import { faThumbsUp as faThumbsUpRegular } from "@fortawesome/free-regular-svg-icons";
 import { faThumbsUp as faThumbsUpSolid } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useRouter } from "next/navigation";
 import React, { FC } from "react";
 
 const PokemonLikeButton: FC<{
@@ -12,11 +11,9 @@ const PokemonLikeButton: FC<{
   userLiked: boolean;
   userLogged: boolean
 }> = ({ commentId, likes, userLiked, userLogged }) => {
-  const router = useRouter();
   const handleClick = async () => {
     if(!userLogged) return
     await likeComment(commentId);
-    router.refresh();
   };
   return (
     <button

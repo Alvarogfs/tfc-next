@@ -29,6 +29,13 @@ export const config = {
       }
       return session;
     },
+    jwt({token, trigger, session}){
+      if(trigger === 'update'){
+        token.name = session.name
+        token.picture = session.image
+      }
+      return token
+    }
   },
   // @ts-ignore
   adapter: PrismaAdapter(prisma),
@@ -48,7 +55,7 @@ export const config = {
           });
           if (!(await bcrypt.compare(credentials?.password!, user.password!)))
             return null;
-          return { id: user.id, name: user.name, email: user.email, image: null };
+          return { id: user.id, name: user.name, email: user.email, image: user.image };
         } catch (error) {
           return null
         }

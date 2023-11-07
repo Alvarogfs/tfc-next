@@ -7,9 +7,6 @@ const nextConfig = {
         permanent: true
       }]
     },
-    experimental: {
-      serverActions: true
-    },
   images: {
     remotePatterns: [
       {
@@ -18,6 +15,7 @@ const nextConfig = {
         pathname: "/PokeAPI/**",
       },
       { hostname: "avatars.githubusercontent.com", protocol: "https" },
+      {hostname: "gmuy9ecqqb0gs5lv.public.blob.vercel-storage.com", protocol: "https"}
     ],
   },
 };

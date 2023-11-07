@@ -1,19 +1,15 @@
 "use client"
 import { postComment } from '@/utils/actions'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/navigation'
 import React, { FC, FormEvent, useState } from 'react'
 
 const PokemonCommentForm:FC<{pokemonId: string, userId?: string}> = ({pokemonId, userId}) => {
     const [comment, setComment] = useState("")
-    const router = useRouter()
     const handleFormSubmit  = async(event: FormEvent) =>{
         event.preventDefault()
         if(!userId) return
         try {
             await postComment(pokemonId, comment)
             setComment("")
-            router.refresh()
         } catch (error) {
             console.error(error)
         }

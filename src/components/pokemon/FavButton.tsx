@@ -4,14 +4,12 @@ import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { toggleFavourite } from '@/utils/actions'
 import React, { FC } from 'react'
-import { useRouter } from 'next/navigation'
 
 const FavButton:FC<{toggled?: boolean, id: number}> = ({toggled, id}) => {
-  const router = useRouter()
 const togglePokemon = async () =>{
   try {
     toggleFavourite(id.toString())
-    router.refresh()
+    //router.refresh()
   } catch (error) {
     console.error(error);
   }
