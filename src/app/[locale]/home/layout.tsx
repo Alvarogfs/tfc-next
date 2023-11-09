@@ -26,18 +26,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await auth();
-  const scheme = await getCurrentScheme();
   return (
-    <html lang="en" className={scheme === "dark" ? "dark" : ""}>
-      <body
-        className={`${inter.className} h-screen bg-neutral-200 dark:bg-black`}
-      >
-        <Providers>
-          <NavBar></NavBar> <div className="mt-28 ">{children}</div>
-        </Providers>
-        {!cookies().has("cookieConsent") && <CookieConsent></CookieConsent>}
-          <UserModal user={session?.user}></UserModal>
-      </body>
-    </html>
+    <>
+      <Providers>
+        <NavBar></NavBar> <div className="mt-28 ">{children}</div>
+      </Providers>
+      {!cookies().has("cookieConsent") && <CookieConsent></CookieConsent>}
+      <UserModal user={session?.user}></UserModal>
+    </>
   );
 }

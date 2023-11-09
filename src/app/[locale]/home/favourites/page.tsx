@@ -1,7 +1,7 @@
 import { auth } from '@/utils/auth'
 import { redirect } from 'next/navigation'
 import React from 'react'
-import prisma from '../../../../prisma/prisma'
+import prisma from '../../../../../prisma/prisma'
 import PokemonCard from '@/components/pokemon/PokemonCard'
 import { getPokemon } from '@/utils/api'
 

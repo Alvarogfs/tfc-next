@@ -26,7 +26,6 @@ const UserModal: FC<{ user?: User }> = ({ user }) => {
   const router = useRouter();
   const pathname = usePathname();
   const session = useSession()
-  console.log(user?.image);
   function onCloseModal() {
     router.replace(pathname);
   }
