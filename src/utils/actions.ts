@@ -125,8 +125,3 @@ export const editUser = async (name: string, image?: {content: string, name: str
     console.error(error);
   }
 };
-export const createRoom = async () => {
-  const session = await auth();
-  if(!session?.user) return
-  wsApi.post('/rooms', {user: session.user})
-}

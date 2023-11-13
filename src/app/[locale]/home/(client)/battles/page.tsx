@@ -1,19 +1,39 @@
 "use client";
-import { createRoom } from "@/utils/actions";
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Card } from "flowbite-react";
 import { useQuery } from "@tanstack/react-query";
-import { getRooms } from "@/utils/api";
+import { getRooms, wsApi } from "@/utils/api";
 import { useI18n } from "@/locales/client";
+import socket from '@/utils/socket'
+import { useSession } from "next-auth/react";
 const Lobby = () => {
+  const {data} = useSession()
   const {
     data: rooms,
     isLoading,
     refetch,
   } = useQuery({ queryKey: ["rooms"], queryFn: () => getRooms() });
-
+  useEffect(() => {
+    if(data?.user) socket.connect()
+    socket.on("connect", () => {
+      socket.emit("authenticate", {
+        user: data?.user
+      });
+    });
+    socket.on("userConnected", (data) => {
+      console.log(data)
+    })
+    socket.on('roomCreated', () => {
+      refetch()
+    })
+    socket.on('userDisconnected', () => {
+      refetch()
+    })
+    return () => {socket.removeAllListeners('connect')}
+  },[data, refetch])
   const handleCreateRoom = async () => {
-    await createRoom();
+    if(!data?.user) return
+    socket.emit("createRoom", data.user)
   };
   const t = useI18n()
   return (

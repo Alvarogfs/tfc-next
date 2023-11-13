@@ -1,7 +1,6 @@
 import { auth } from "@/utils/auth";
 import Link from "next/link";
 import AuthDropdown from "./AuthDropdown";
-import { useTranslation } from "@/i18n";
 import { getI18n } from "@/locales/server";
 
 const AuthButton = async () => {
