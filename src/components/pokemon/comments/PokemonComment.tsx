@@ -18,9 +18,7 @@ const PokemonComment: FC<{
         <div className="flex items-center">
           <p className="inline-flex items-center mr-3 text-sm text-gray-900 dark:text-white font-semibold">
             {author?.image && (
-              <Image
-                width={24}
-                height={24}
+              <img
                 className="mr-2 w-6 h-6 rounded-full"
                 src={author.image}
                 alt={author.name ?? author.email ?? author.id}

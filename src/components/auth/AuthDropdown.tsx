@@ -31,11 +31,9 @@ const AuthDropdown:FC<{
     //label={<Avatar alt="User settings" img={image ?? '/img/avatar_placeholder.jpg'} rounded/>}
     label={  <Avatar
       img={() => (
-          <Image
+          <img
             src={image ?? '/img/avatar_placeholder.jpg'}
             alt="User image"
-            width={48}
-            height={48}
             className="rounded-full w-12 h-12 object-cover"
           />
       )}

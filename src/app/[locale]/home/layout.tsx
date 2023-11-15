@@ -29,7 +29,7 @@ export default async function RootLayout({
   return (
     <>
       <Providers>
-        <NavBar></NavBar> <div className="mt-28 ">{children}</div>
+        <NavBar></NavBar> <div className="flex flex-col pt-28 min-h-full">{children}</div>
       </Providers>
       {!cookies().has("cookieConsent") && <CookieConsent></CookieConsent>}
       <UserModal user={session?.user}></UserModal>

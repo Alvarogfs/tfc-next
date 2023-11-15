@@ -23,7 +23,10 @@ export const wsApi = axios.create({
     baseURL: process.env.NEXT_PUBLIC_SOCKET_URL
 })
 export const getRooms = async() =>{
-    console.log(process.env.SOCKET_URL)
     const response = await wsApi.get<Room[]>('/rooms')
+    return response.data
+}
+export const getRoomById = async(id: string) =>{
+    const response = await wsApi.get<Room>(`/rooms/${id}`)
     return response.data
 }
