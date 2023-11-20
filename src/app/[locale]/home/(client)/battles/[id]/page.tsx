@@ -3,20 +3,39 @@ import { getRoomById } from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { Avatar, Spinner } from "flowbite-react";
-import { notFound, useParams } from "next/navigation";
-import React from "react";
+import { notFound, useParams, useRouter } from "next/navigation";
+import React, { useEffect } from "react";
+import socket from "@/utils/socket";
 
 const BattleRoom = () => {
   const { id } = useParams() as { id: string };
+  const router = useRouter();
   const {
     data: room,
     isLoading,
     error,
+    refetch,
   } = useQuery({
-    queryKey: ["room", id],
+    queryKey: ["rooms", 'currentRoom'],
     queryFn: () => getRoomById(id),
     retry: false,
   });
+  useEffect(() => {
+    socket.connect();
+    socket.on("joinedRoom", () => {
+      refetch();
+    });
+    socket.on("userDisconnected", () => {
+      refetch();
+    });
+    socket.on('userExit', () => {
+      refetch()
+    })
+
+    return () => {
+      socket.removeAllListeners("connect");
+    };
+  }, [room, refetch, router]);
   console.log(error);
   if (isLoading)
     return (
@@ -39,7 +58,7 @@ const BattleRoom = () => {
         {room?.users.map((element) => (
           <div key={element.id} className="relative">
             <Avatar
-            rounded
+              rounded
               img={element.image ?? "/img/avatar_placeholder.jpg"}
             >
               <span className="px-2">{element.name}</span>

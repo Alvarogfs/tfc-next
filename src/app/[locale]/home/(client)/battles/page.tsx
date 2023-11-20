@@ -7,7 +7,6 @@ import { useI18n } from "@/locales/client";
 import socket from '@/utils/socket'
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { Room } from "@/types/battles.types";
 const Lobby = () => {
   const {data} = useSession()
@@ -42,6 +41,9 @@ const Lobby = () => {
     })
 
     socket.on('joinedRoom', () => {
+      refetch()
+    })
+    socket.on('userExit', () => {
       refetch()
     })
 
