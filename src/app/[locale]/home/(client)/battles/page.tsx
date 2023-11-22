@@ -55,7 +55,6 @@ const Lobby = () => {
   };
   const handleJoinRoom = (room: Room) => {
     if(room.users.length >= 2) return
-    socket.emit("joinRoom", room.id, data?.user)
     router.push(`/home/battles/${room.id}`)
   }
   const t = useI18n()

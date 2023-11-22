@@ -5,6 +5,7 @@ import { useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { match } from "path-to-regexp";
 import { ReactElement, useEffect, useRef } from "react";
+import {Toaster} from 'react-hot-toast'
 
 export default function SubLayout({
     children,
@@ -30,11 +31,13 @@ export default function SubLayout({
     }
     socket.on("userExit", (userId) => {
       if(userId === data?.user.id){
+        console.log("object");
       queryClient.invalidateQueries({queryKey: ["rooms", 'currentRoom']});
       queryClient.invalidateQueries({queryKey: ["rooms"]});
+      queryClient.resetQueries({queryKey: ["rooms", 'currentRoom']})
       roomRef.current = null;
     }
     });
   }, [pathname, queryClient, data?.user.id]);
-    return (children)
+    return <><Toaster position="bottom-left"></Toaster>{children}</>
   }
