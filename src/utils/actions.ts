@@ -5,8 +5,8 @@ import { auth } from "./auth";
 import bcrypt from "bcrypt";
 import { put } from "@vercel/blob";
 import axios from "axios";
-import { wsApi } from "./api";
-
+import { getPokemon, wsApi } from "./api";
+import { Pokemon } from "@/types/pokemon.types";
 
 export const toggleFavourite = async (pokemonId: string) => {
   const session = await auth();
@@ -100,7 +100,10 @@ export const registerUser = async (
     },
   });
 };
-export const editUser = async (name: string, image?: {content: string, name: string}) => {
+export const editUser = async (
+  name: string,
+  image?: { content: string; name: string }
+) => {
   const session = await auth();
   try {
     const user = await prisma.user.findUniqueOrThrow({
@@ -108,20 +111,40 @@ export const editUser = async (name: string, image?: {content: string, name: str
         id: session?.user.id,
       },
     });
-    const base64Blob = image ? await (await fetch(image.content)).blob() :  null
-    const { url } = image && base64Blob ? await put(`images/user/${image.name}`, base64Blob, { access: 'public' }) : {url: null};
+    const base64Blob = image ? await (await fetch(image.content)).blob() : null;
+    const { url } =
+      image && base64Blob
+        ? await put(`images/user/${image.name}`, base64Blob, {
+            access: "public",
+          })
+        : { url: null };
     const newUser = await prisma.user.update({
       where: {
         id: session?.user.id,
       },
       data: {
         name,
-        image: url ?? user.image
+        image: url ?? user.image,
       },
     });
-    revalidatePath('/home', 'layout');
-    return {name: newUser.name, image: newUser.image}
+    revalidatePath("/home", "layout");
+    return { name: newUser.name, image: newUser.image };
   } catch (error) {
     console.error(error);
   }
+};
+export const generateTeam = async () => {
+  const randomIds: number[] = [];
+  const randomPokemon: Pokemon[] = [];
+  while (randomIds.length < 3) {
+    const id = Math.floor(Math.random() * 151) + 1;
+    if (!randomIds.includes(id)) {
+      randomIds.push(id);
+    }
+  }
+  for (const pokemonId of randomIds) {
+    const pokemon = await getPokemon(pokemonId.toString());
+    randomPokemon.push(pokemon);
+  }
+  return randomPokemon;
 };

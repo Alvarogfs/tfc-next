@@ -60,17 +60,17 @@ const Lobby = () => {
   const t = useI18n()
   return (
     <div className="px-6">
-      <Button onClick={handleCreateRoom}>Create Room</Button>
+      <Button className="bg-black hover:bg-yellow-400" onClick={handleCreateRoom}>{t("battles.create-room")}</Button>
       <div className="grid xl:grid-cols-6 gap-6 sm:grid-cols-1 justify-center items-center md:grid-cols-3 my-7">
         {rooms?.map((room) => (
           <Card key={room.id}>
             <div className="flex flex-col divide-y">
               {room.users.map((user) => (
-                <span key={user.id}>{user.name}</span>
+                <span className="dark:text-white" key={user.id}>{user.name}</span>
               ))}
             </div>
             <div className="flex justify-between"><span>{room.users.length}/2</span>
-            <Button onClick={() => handleJoinRoom(room)}>Join Room</Button>
+            <Button onClick={() => handleJoinRoom(room)}>{t("battles.join-room")}</Button>
             </div>
           </Card>
         ))}

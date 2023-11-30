@@ -74,7 +74,7 @@ const NavBar = async () => {
                     </NavBarLink>
                   </li>
                   <li>
-                    <NavBarLink href="/home/battles">Battles</NavBarLink>
+                    <NavBarLink href="/home/battles">{t("navbar.battles")}</NavBarLink>
                   </li>
                 </>
               )}

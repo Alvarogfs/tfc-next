@@ -6,11 +6,13 @@ import TypeBadge from "./TypeBadge";
 import FavButton from "./FavButton";
 import prisma from "../../../prisma/prisma";
 import { auth } from "@/utils/auth";
+import { getI18n } from "@/locales/server";
 
 const PokemonDetailCard: FC<{ pokemon: Pokemon }> = async ({ pokemon }) => {
   const mainColor = getColorType(pokemon.types[0].type.name);
   const borderColor = getBorderColor(pokemon.types[0].type.name);
   const session = await auth();
+  const t = await getI18n();
   const isFavourited = session?.user?.id
     ? await prisma.pokemonFavouriteUser.findUnique({
         where: {
@@ -50,7 +52,7 @@ const PokemonDetailCard: FC<{ pokemon: Pokemon }> = async ({ pokemon }) => {
         height="475"
       />
       <div className="flex flex-col">
-        <h5 className="text-center font-bold">Types</h5>
+        <h5 className="text-center font-bold">{t("pokemonDetail.types")}</h5>
         <div className="flex flex-row justify-center gap-3 bg-white rounded-lg p-2">
           {" "}
           {pokemon.types.map((type) => (
@@ -60,7 +62,7 @@ const PokemonDetailCard: FC<{ pokemon: Pokemon }> = async ({ pokemon }) => {
       </div>
       <div className="flex flex-row justify-evenly gap-2 text-center">
         <div className="w-full">
-          <h5 className="text-center font-bold">Height</h5>
+          <h5 className="text-center font-bold">{t("pokemonDetail.height")}</h5>
           <div className="bg-white rounded-lg p-2">
             {(pokemon.height / 10).toLocaleString("es-ES", {
               minimumFractionDigits: 1,
@@ -69,7 +71,7 @@ const PokemonDetailCard: FC<{ pokemon: Pokemon }> = async ({ pokemon }) => {
           </div>
         </div>
         <div className="w-full">
-          <h5 className="text-center font-bold">Weight</h5>
+          <h5 className="text-center font-bold">{t("pokemonDetail.weight")}</h5>
           <div className="bg-white rounded-lg p-2">
             {(pokemon.weight / 10).toLocaleString("es-ES", {
               minimumFractionDigits: 1,

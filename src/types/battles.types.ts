@@ -1,3 +1,9 @@
 import { User } from "next-auth";
+import { Pokemon } from "./pokemon.types";
 
-export type Room = {id: string, users: User[]}
+export type Player = User & {pokemon: Pokemon}
+
+export type Room = {id: string, users: Player[]}
+
+const BATTLE_STATUS = ["pending", "ready", "choosing", "chosen", "battling", "finished"] as const
+export type BattleStatus = typeof BATTLE_STATUS[number]
