@@ -14,7 +14,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { BattleStatus } from "@/types/battles.types";
 import { generateTeam } from "@/utils/actions";
-import { Pokemon } from "@/types/pokemon.types";
+import {
+  Pokemon,
+  PokemonStats as PokemonStatsType,
+} from "@/types/pokemon.types";
 import Image from "next/image";
 import TypeBadge from "@/components/pokemon/TypeBadge";
 import PokemonStats from "@/components/pokemon/PokemonStats";
@@ -25,6 +28,9 @@ const BattleRoom = () => {
   const router = useRouter();
   const { data: session } = useSession();
   const [status, setStatus] = useState<BattleStatus>("pending");
+  const [pokemonStats, setPokemonStats] = useState<PokemonStatsType>();
+  const [rivalPokemonStats, setRivalPokemonStats] =
+    useState<PokemonStatsType>();
   const [team, setTeam] = useState<Pokemon[]>([]);
   const {
     data: room,
@@ -42,8 +48,8 @@ const BattleRoom = () => {
     },
     retry: false,
   });
-  const player = room?.users?.find((user) => user.id === session?.user.id)
-  const rival = room?.users?.find((user) => user.id !== session?.user.id)
+  const player = room?.users?.find((user) => user.id === session?.user.id);
+  const rival = room?.users?.find((user) => user.id !== session?.user.id);
   useEffect(() => {
     socket.connect();
     socket.on(`joinedRoom-${id}`, (user: User) => {
@@ -99,9 +105,17 @@ const BattleRoom = () => {
     });
     socket.on("allChosen", async () => {
       setStatus("battling");
-      refetch()
+      refetch();
     });
-
+    socket.on("attack", (result) => {
+      if (!player || !rival) return;
+      setPokemonStats(result[player.id]);
+      setRivalPokemonStats(result[rival.id]);
+    });
+    socket.on('victory', (id) => {
+      if (!player) return;
+      setStatus(id === player.id ? 'won': 'lost')
+    })
     return () => {
       socket.removeAllListeners("connect");
       socket.removeAllListeners("joinedRoom");
@@ -110,11 +124,11 @@ const BattleRoom = () => {
       socket.removeAllListeners("allReady");
       socket.removeAllListeners("allChosen");
     };
-  }, [room, refetch, router, id, session?.user.id]);
+  }, [room, refetch, router, id, session?.user.id, player, rival]);
 
   const choosePokemon = (pokemon: Pokemon) => {
-    setStatus("chosen")
-    socket.emit("pokemonChosen", session?.user, pokemon)
+    setStatus("chosen");
+    socket.emit("pokemonChosen", session?.user, pokemon);
   };
   const renderRoom = () => {
     switch (status) {
@@ -159,12 +173,34 @@ const BattleRoom = () => {
       case "chosen":
         return <div className="dark:text-white">Waiting for opponent...</div>;
       case "battling":
-        console.log({player}, {rival});
-        if(!player?.pokemon || !rival?.pokemon) return
-        return <div className="flex flex-row justify-between flex-1 px-4">
-          <Image alt={player.pokemon.name} width={128} height={128} src={player.pokemon.sprites.back_default}></Image>
-          <Image alt={rival.pokemon.name} width={128} height={128} src={rival.pokemon.sprites.front_default}></Image>
-        </div>;
+        console.log({ player }, { rival });
+        if (!player?.pokemon || !rival?.pokemon) return;
+        return (
+          <div className="flex flex-row justify-between flex-1 px-4">
+            <div className="dark:text-white">
+              { pokemonStats?.hp }
+              <Image
+                alt={player.pokemon.name}
+                width={128}
+                height={128}
+                src={player.pokemon.sprites.back_default}
+              ></Image>
+            </div>
+            <div className="dark:text-white">
+            { rivalPokemonStats?.hp }
+              <Image
+                alt={rival.pokemon.name}
+                width={128}
+                height={128}
+                src={rival.pokemon.sprites.front_default}
+              ></Image>
+            </div>
+          </div>
+        );
+      case "won":
+        return 'You won'
+      case "lost":
+        return 'You lost'
       case "finished":
         return;
     }
