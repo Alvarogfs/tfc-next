@@ -70,7 +70,7 @@ const Lobby = () => {
               ))}
             </div>
             <div className="flex justify-between"><span>{room.users.length}/2</span>
-            <Button onClick={() => handleJoinRoom(room)}>{t("battles.join-room")}</Button>
+            <Button className="bg-black hover:bg-yellow-400" onClick={() => handleJoinRoom(room)}>{t("battles.join-room")}</Button>
             </div>
           </Card>
         ))}

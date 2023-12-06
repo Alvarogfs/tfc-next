@@ -1,4 +1,4 @@
-import { TYPES } from "@/types/pokemon.types";
+import { Pokemon, PokemonStats, TYPES } from "@/types/pokemon.types";
 
 export const capitalize = (str: string) => {
   return str.charAt(0).toLocaleUpperCase() + str.slice(1);
@@ -47,3 +47,24 @@ export const getBorderColor = (pokemonType: string) => {
   if (type === "fairy") return "border-rose-500";
   if (type === "unknown") return "border-slate-600";
 };
+export const getStats = (pokemon: Pokemon) => {
+  const hp =  pokemon.stats.find(stat => {
+    return stat.stat.name === "hp"
+  })?.base_stat;
+  const attack =  pokemon.stats.find(stat => {
+    return stat.stat.name === "attack"
+  })?.base_stat;
+  const defense =  pokemon.stats.find(stat => {
+    return stat.stat.name === "defense"
+  })?.base_stat;
+  const special_attack =  pokemon.stats.find(stat => {
+    return stat.stat.name === "special-attack"
+  })?.base_stat;
+  const special_defense =  pokemon.stats.find(stat => {
+    return stat.stat.name === "special-defense"
+  })?.base_stat;
+  const speed =  pokemon.stats.find(stat => {
+    return stat.stat.name === "speed"
+  })?.base_stat;
+  return {hp, attack, defense, special_attack, special_defense, speed} as PokemonStats
+}

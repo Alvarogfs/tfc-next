@@ -1,6 +1,6 @@
 import PokemonCommentSection from "@/components/pokemon/comments/PokemonCommentSection";
 import PokemonDetailCard from "@/components/pokemon/PokemonDetailCard";
-import PokemonStats from "@/components/pokemon/PokemonStats";
+import PokemonStatsType from "@/components/pokemon/PokemonStats";
 import { getI18n } from "@/locales/server";
 import { getPokemon } from "@/utils/api";
 import { capitalize, getBorderColor, getColorType } from "@/utils/filters";
@@ -51,7 +51,7 @@ const Details: FC<{ params: { name: string } }> = async ({ params }) => {
         <div>
           <PokemonDetailCard pokemon={pokemon}></PokemonDetailCard>
         </div>
-            <PokemonStats pokemon={pokemon}></PokemonStats>
+            <PokemonStatsType pokemon={pokemon}></PokemonStatsType>
       </section>
       <section>
         <PokemonCommentSection pokemonId={pokemon.id.toString()}></PokemonCommentSection>

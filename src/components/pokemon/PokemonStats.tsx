@@ -1,31 +1,11 @@
 "use client"
 import React from "react";
-import { Pokemon, PokemonStats } from "@/types/pokemon.types";
+import { Pokemon, PokemonStats as PokemonStatsType  } from "@/types/pokemon.types";
 import { useI18n } from "@/locales/client";
-import { getBorderColor, getColorType } from "@/utils/filters";
+import { getBorderColor, getColorType, getStats } from "@/utils/filters";
 const PokemonStats = ({pokemon} : {pokemon: Pokemon}) => {
     const t = useI18n();
-    const stats =( () => {
-        const hp =  pokemon.stats.find(stat => {
-          return stat.stat.name === "hp"
-        })?.base_stat;
-        const attack =  pokemon.stats.find(stat => {
-          return stat.stat.name === "attack"
-        })?.base_stat;
-        const defense =  pokemon.stats.find(stat => {
-          return stat.stat.name === "defense"
-        })?.base_stat;
-        const special_attack =  pokemon.stats.find(stat => {
-          return stat.stat.name === "special-attack"
-        })?.base_stat;
-        const special_defense =  pokemon.stats.find(stat => {
-          return stat.stat.name === "special-defense"
-        })?.base_stat;
-        const speed =  pokemon.stats.find(stat => {
-          return stat.stat.name === "speed"
-        })?.base_stat;
-        return {hp, attack, defense, special_attack, special_defense, speed} as PokemonStats
-      })()
+    const stats = getStats(pokemon)
   return (
     <div
       className={`${getColorType(

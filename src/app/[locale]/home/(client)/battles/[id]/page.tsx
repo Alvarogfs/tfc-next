@@ -2,7 +2,7 @@
 import { getRoomById } from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { Avatar, Button, Spinner, Toast } from "flowbite-react";
+import { Avatar, Button, Progress, Spinner, Toast } from "flowbite-react";
 import { notFound, useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import socket from "@/utils/socket";
@@ -21,7 +21,7 @@ import {
 import Image from "next/image";
 import TypeBadge from "@/components/pokemon/TypeBadge";
 import PokemonStats from "@/components/pokemon/PokemonStats";
-import { capitalize } from "@/utils/filters";
+import { capitalize, getStats } from "@/utils/filters";
 
 const BattleRoom = () => {
   const { id } = useParams() as { id: string };
@@ -50,6 +50,8 @@ const BattleRoom = () => {
   });
   const player = room?.users?.find((user) => user.id === session?.user.id);
   const rival = room?.users?.find((user) => user.id !== session?.user.id);
+  const originalStats = player?.pokemon ? getStats(player?.pokemon) : null
+  const rivalOriginalStats = rival?.pokemon ? getStats(rival?.pokemon) : null
   useEffect(() => {
     socket.connect();
     socket.on(`joinedRoom-${id}`, (user: User) => {
@@ -135,11 +137,11 @@ const BattleRoom = () => {
       case "pending":
         return (
           <div>
-            <button onClick={handleReady}>Ready</button>
+            <button className="dark:text-white" onClick={handleReady}>Ready</button>
           </div>
         );
       case "ready":
-        return <div>Waiting for opponent...</div>;
+        return <div className="dark:text-white">Waiting for opponent...</div>;
       case "choosing":
         return (
           <div className="flex xl:flex-row flex-col gap-4">
@@ -163,8 +165,8 @@ const BattleRoom = () => {
                   ))}
                 </div>
                 <PokemonStats pokemon={pokemon}></PokemonStats>
-                <Button className="mt-3" onClick={() => choosePokemon(pokemon)}>
-                  Choose
+                <Button className="my-3 border-0 " onClick={() => choosePokemon(pokemon)}>
+                  <Image alt={`Choose ${pokemon.name}`} src={'/img/pokeball.png'} width={205} height={205} className="w-12 h-12"></Image>
                 </Button>
               </div>
             ))}
@@ -178,7 +180,9 @@ const BattleRoom = () => {
         return (
           <div className="flex flex-row justify-between flex-1 px-4">
             <div className="dark:text-white">
-              { pokemonStats?.hp }
+            { pokemonStats?.hp } / {originalStats?.hp}
+              {(originalStats?.hp && pokemonStats?.hp) && <div className="bg-green-500 h-4" style={{width: `${(pokemonStats.hp / originalStats.hp) * 100}%`}}>
+                </div>}
               <Image
                 alt={player.pokemon.name}
                 width={128}
@@ -187,7 +191,9 @@ const BattleRoom = () => {
               ></Image>
             </div>
             <div className="dark:text-white">
-            { rivalPokemonStats?.hp }
+            { rivalPokemonStats?.hp } / { rivalOriginalStats?.hp }
+            {(rivalOriginalStats?.hp && rivalPokemonStats?.hp) && <div className="bg-green-500 h-4" style={{width: `${(rivalPokemonStats.hp / rivalOriginalStats.hp) * 100}%`}}>
+                </div>}
               <Image
                 alt={rival.pokemon.name}
                 width={128}
@@ -198,9 +204,9 @@ const BattleRoom = () => {
           </div>
         );
       case "won":
-        return 'You won'
+        return <div className="dark:text-white">You won</div>
       case "lost":
-        return 'You lost'
+        return <div className="dark:text-white">You lost</div>
       case "finished":
         return;
     }
@@ -227,7 +233,7 @@ const BattleRoom = () => {
   return (
     <>
       <div className="flex flex-1 flex-row gap-8 px-4 pb-8 ">
-        <div className="flex flex-col items-start gap-4 dark:bg-neutral-900 bg-neutral-300 rounded p-4">
+        <div className="flex-col items-start gap-4 dark:bg-neutral-900 bg-neutral-300 rounded p-4 hidden md:flex">
           {room?.users.map((element) => (
             <div key={element.id} className="relative">
               <Avatar
