@@ -5,12 +5,13 @@ import { signIn } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import React, { FormEvent, useState } from "react";
-import { ZodError, ZodFormattedError } from "zod";
+import { ZodFormattedError } from "zod";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [errorExist, setErrorExist] = useState(false);
   const [listErrors, setError] =
     useState<
       ZodFormattedError<
@@ -20,6 +21,7 @@ const SignUp = () => {
     >();
   const handleSubmit = async (event: FormEvent) => {
     event.preventDefault();
+    setErrorExist(false);
     const form = formSchema.safeParse({
       name,
       email,
@@ -40,6 +42,7 @@ const SignUp = () => {
     } catch (error) {
       if (error instanceof Error && error.message === "exists") {
         console.log("User already exists");
+        setErrorExist(true);
       }
     }
   };
@@ -81,7 +84,7 @@ const SignUp = () => {
                   id="email"
                   value={email}
                   onChange={(event) => setEmail(event.currentTarget.value)}
-                  className={`bg-gray-50 border 
+                  className={`bg-gray-50 border
                   text-gray-900 sm:text-sm rounded-lg
                   block w-full p-2.5 dark:bg-gray-700  ${
                     listErrors?.email
@@ -97,6 +100,11 @@ const SignUp = () => {
                     {error}
                   </span>
                 ))}
+                {errorExist && (
+                  <span className="block text-xs mt-2 text-red-500">
+                    Email already exists
+                  </span>
+                )}
               </div>
               <div>
                 <label

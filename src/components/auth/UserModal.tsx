@@ -16,6 +16,7 @@ import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
 import { editUser } from "@/utils/actions";
+import { useI18n } from "@/locales/client";
 
 const UserModal: FC<{ user?: User }> = ({ user }) => {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -23,6 +24,7 @@ const UserModal: FC<{ user?: User }> = ({ user }) => {
   const [name, setName] = useState(user?.name!);
   const [imageName, setImageName] = useState("");
   const searchParams = useSearchParams();
+  const t = useI18n()
   const router = useRouter();
   const pathname = usePathname();
   const session = useSession()
@@ -66,7 +68,7 @@ const UserModal: FC<{ user?: User }> = ({ user }) => {
       <Modal.Body>
         <div className="space-y-6">
           <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-            Edit user
+            {t("user-modal.title")}
           </h3>
 
           <Avatar
@@ -98,7 +100,7 @@ const UserModal: FC<{ user?: User }> = ({ user }) => {
           />
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="email" value="Your email" />
+              <Label htmlFor="email" value={t("user-modal.your-email")} />
             </div>
             <TextInput
               id="email"
@@ -109,11 +111,11 @@ const UserModal: FC<{ user?: User }> = ({ user }) => {
           </div>
           <div>
             <div className="mb-2 block">
-              <Label htmlFor="name" value="Your name" />
+              <Label htmlFor="name" value={t("user-modal.name")} />
             </div>
             <TextInput
               id="name"
-              placeholder="name"
+              placeholder="Jane doe"
               value={name}
               onChange={(event) => setName(event.target.value)}
               required
@@ -121,10 +123,10 @@ const UserModal: FC<{ user?: User }> = ({ user }) => {
           </div>
           <div className="w-full flex flex-row justify-between">
             <Button color="failure" className="border-0" onClick={onCloseModal}>
-              Cancel
+            {t("user-modal.cancel")}
             </Button>
             <Button color="success" className="border-0" onClick={updateUser}>
-              Edit
+            {t("user-modal.edit")}
             </Button>
           </div>
         </div>

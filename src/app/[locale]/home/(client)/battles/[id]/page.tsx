@@ -2,11 +2,10 @@
 import { getRoomById } from "@/utils/api";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
-import { Avatar, Button, Progress, Spinner, Toast } from "flowbite-react";
-import { notFound, useParams, useRouter } from "next/navigation";
+import { Avatar, Button, Spinner } from "flowbite-react";
+import { useParams, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import socket from "@/utils/socket";
-//import RoomNotification from "@/components/battles/roomNotification";
 import { User } from "next-auth";
 import toast from "react-hot-toast";
 import { useSession } from "next-auth/react";
@@ -22,10 +21,12 @@ import Image from "next/image";
 import TypeBadge from "@/components/pokemon/TypeBadge";
 import PokemonStats from "@/components/pokemon/PokemonStats";
 import { capitalize, getStats } from "@/utils/filters";
+import { useI18n } from "@/locales/client";
 
 const BattleRoom = () => {
   const { id } = useParams() as { id: string };
   const router = useRouter();
+  const t = useI18n()
   const { data: session } = useSession();
   const [status, setStatus] = useState<BattleStatus>("pending");
   const [pokemonStats, setPokemonStats] = useState<PokemonStatsType>();
@@ -57,13 +58,13 @@ const BattleRoom = () => {
     socket.on(`joinedRoom-${id}`, (user: User) => {
       if (session?.user.id && user.id !== session.user.id) {
         toast.custom(
-          (t) => (
+          (tst) => (
             <div
               className={`flex flex-row bg-white px-6 py-4 shadow-md rounded mb-7 ms-3 gap-2 ${
-                t.visible ? "animate-enter" : "animate-leave"
+                tst.visible ? "animate-enter" : "animate-leave"
               }`}
             >
-              <span>{user.name} joined</span>
+              <span>{user.name} {t("battles.joined")}</span>
               <button onClick={() => toast.remove(`joined-${user.id}`)}>
                 <FontAwesomeIcon icon={faClose}></FontAwesomeIcon>
               </button>
@@ -77,13 +78,13 @@ const BattleRoom = () => {
     socket.on(`disconnect-${id}`, (user: User) => {
       if (session?.user.id && user.id !== session.user.id) {
         toast.custom(
-          (t) => (
+          (tst) => (
             <div
               className={`flex flex-row bg-white px-6 py-4 shadow-md rounded mb-7 ms-3 gap-2 ${
-                t.visible ? "animate-enter" : "animate-leave"
+                tst.visible ? "animate-enter" : "animate-leave"
               }`}
             >
-              <span>{user.name} left</span>
+              <span>{user.name} {t("battles.left")}</span>
               <button onClick={() => toast.remove(`disconnect-${user.id}`)}>
                 <FontAwesomeIcon icon={faClose}></FontAwesomeIcon>
               </button>
@@ -126,7 +127,7 @@ const BattleRoom = () => {
       socket.removeAllListeners("allReady");
       socket.removeAllListeners("allChosen");
     };
-  }, [room, refetch, router, id, session?.user.id, player, rival]);
+  }, [room, refetch, router, id, session?.user.id, player, rival, t]);
 
   const choosePokemon = (pokemon: Pokemon) => {
     setStatus("chosen");
@@ -137,11 +138,11 @@ const BattleRoom = () => {
       case "pending":
         return (
           <div>
-            <button className="dark:text-white" onClick={handleReady}>Ready</button>
+            <button className="dark:text-white" onClick={handleReady}>{t("battles.ready")}</button>
           </div>
         );
       case "ready":
-        return <div className="dark:text-white">Waiting for opponent...</div>;
+        return <div className="dark:text-white">{t("battles.waiting")}</div>;
       case "choosing":
         return (
           <div className="flex xl:flex-row flex-col gap-4">
@@ -173,7 +174,7 @@ const BattleRoom = () => {
           </div>
         );
       case "chosen":
-        return <div className="dark:text-white">Waiting for opponent...</div>;
+        return <div className="dark:text-white">{t("battles.waiting")}</div>;
       case "battling":
         console.log({ player }, { rival });
         if (!player?.pokemon || !rival?.pokemon) return;
@@ -204,9 +205,9 @@ const BattleRoom = () => {
           </div>
         );
       case "won":
-        return <div className="dark:text-white">You won</div>
+        return <div className="dark:text-white">{t("battles.won")}</div>
       case "lost":
-        return <div className="dark:text-white">You lost</div>
+        return <div className="dark:text-white">{t("battles.lost")}</div>
       case "finished":
         return;
     }
@@ -223,7 +224,7 @@ const BattleRoom = () => {
     );
   const err = error as AxiosError;
   if (err) {
-    if (err.response?.status === 404) notFound();
+    if (err.response?.status === 404) router.push("/home/battles");
     return (
       <div className="flex flex-1 text-red-600 justify-center items-center text-2xl">
         Error
@@ -251,11 +252,10 @@ const BattleRoom = () => {
           {room?.users.length! > 1 ? (
             renderRoom()
           ) : (
-            <div>Waiting for opponent...</div>
+            <div>{t("battles.waiting")}</div>
           )}
         </div>
       </div>
-      {/* <RoomNotification></RoomNotification> */}
     </>
   );
 };

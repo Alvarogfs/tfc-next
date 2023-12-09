@@ -3,8 +3,7 @@ import { Avatar,  Dropdown } from 'flowbite-react';
 import { FC } from 'react'
 import {signOut} from "next-auth/react"
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import Image from 'next/image'
-import UserModal from './UserModal';
+import { useI18n } from '@/locales/client';
 
 const AuthDropdown:FC<{
     name: string;
@@ -13,7 +12,7 @@ const AuthDropdown:FC<{
 }> = ({name, email, image}) => {
   const router = useRouter()
   const pathname = usePathname()
-  const searchParams = useSearchParams()
+  const t = useI18n()
   const openModal = () =>{
     const params = new URLSearchParams()
     params.set('editUser', 'true')
@@ -48,11 +47,11 @@ const AuthDropdown:FC<{
       </span>
     </Dropdown.Header>
     <Dropdown.Item onClick={openModal} className='dark:hover:text-black text-white hover:text-black'>
-      Settings
+      {t("navbar.setting")}
     </Dropdown.Item>
     <Dropdown.Divider />
     <Dropdown.Item className='dark:hover:text-black text-white hover:text-black' onClick={() => handleSignOut()}>
-      Sign out
+    {t("navbar.signout")}
     </Dropdown.Item>
   </Dropdown>
 

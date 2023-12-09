@@ -1,7 +1,7 @@
-import { auth } from "@/utils/auth";
 import { getCurrentScheme } from "@/utils/colorScheme";
 import { Inter } from "next/font/google";
 import { ReactElement } from "react";
+import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 export default async function RootLayout ({ children }: { children: ReactElement }) {
   const scheme = await getCurrentScheme();

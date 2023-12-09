@@ -1,5 +1,4 @@
 import { getCurrentScheme } from "@/utils/colorScheme";
-import "../globals.css"
 import { Inter } from "next/font/google";
 import { config } from "@fortawesome/fontawesome-svg-core";
 export const metadata = {

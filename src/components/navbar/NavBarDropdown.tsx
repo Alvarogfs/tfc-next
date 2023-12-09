@@ -1,32 +1,64 @@
-import React from 'react'
+"use client";
+import React, { ReactNode, useState } from "react";
+import NavBarLink from "./NavBarLink";
+import { useSession } from "next-auth/react";
+import { useI18n } from "@/locales/client";
+import { User } from "next-auth";
+import AuthButton from "../auth/AuthButton";
+import ColorSchemeToggleButton from "./ColorSchemeToggleButton";
+import LanguageSelector from "./LanguageSelector";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBars } from "@fortawesome/free-solid-svg-icons";
+import { Dropdown } from "flowbite-react";
 
-const NavBarDropdown = () => {
+const NavBarDropdown = ({
+  user,
+  children,
+}: {
+  user?: User;
+  children?: ReactNode;
+}) => {
+  const t = useI18n();
   return (
-    <button
-              data-collapse-toggle="navbar-sticky"
-              type="button"
-              className="inline-flex items-center p-2 w-10 h-10 justify-center text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
-              aria-controls="navbar-sticky"
-              aria-expanded="false"
-            >
-              <span className="sr-only">Open main menu</span>
-              <svg
-                className="w-5 h-5"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 17 14"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M1 1h15M1 7h15M1 13h15"
-                />
-              </svg>
-            </button>
-  )
-}
+    <>
+      <div className="flex md:order-2 gap-4 ps-2 items-center">
+        <ColorSchemeToggleButton></ColorSchemeToggleButton>
+        <LanguageSelector></LanguageSelector>
+        {children}
+        <Dropdown
+          label="menu"
+          renderTrigger={() => (
+            <span className="dark:text-white inline md:hidden"><FontAwesomeIcon  icon={faBars}></FontAwesomeIcon></span>
+          )}
+        >
+          <NavBarLink href="/"> {t("navbar.home")} </NavBarLink>
+          <NavBarLink href="/home/about">{t("navbar.about")}</NavBarLink>
+          {user && (
+            <>
+              <NavBarLink href="/home/favourites">
+                {t("navbar.favourites")}
+              </NavBarLink>
+              <NavBarLink href="/home/battles">
+                {t("navbar.battles")}
+              </NavBarLink>
+            </>
+          )}
+        </Dropdown>
+      </div>
+      <div className="hidden md:flex flex-col md:flex-row flex-1 justify-center items-center gap-4">
+        <NavBarLink href="/"> {t("navbar.home")} </NavBarLink>
+        <NavBarLink href="/home/about">{t("navbar.about")}</NavBarLink>
+        {user && (
+          <>
+            <NavBarLink href="/home/favourites">
+              {t("navbar.favourites")}
+            </NavBarLink>
+            <NavBarLink href="/home/battles">{t("navbar.battles")}</NavBarLink>
+          </>
+        )}
+      </div>
+    </>
+  );
+};
 
-export default NavBarDropdown
+export default NavBarDropdown;
