@@ -9,7 +9,6 @@ const FavButton:FC<{toggled?: boolean, id: number}> = ({toggled, id}) => {
 const togglePokemon = async () =>{
   try {
     toggleFavourite(id.toString())
-    //router.refresh()
   } catch (error) {
     console.error(error);
   }

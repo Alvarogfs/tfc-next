@@ -32,7 +32,6 @@ export default async function RootLayout({
         <ClientWrapper locale={locale}>
           <NavBar></NavBar>{" "}
           <div className="flex flex-col pt-28 min-h-full">{children}</div>
-         
         </ClientWrapper>
       </Providers>
       {!cookies().has("cookieConsent") && <CookieConsent></CookieConsent>}

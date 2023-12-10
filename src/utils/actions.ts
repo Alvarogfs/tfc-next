@@ -127,7 +127,6 @@ export const editUser = async (
         image: url ?? user.image,
       },
     });
-    revalidatePath("/home", "layout");
     return { name: newUser.name, image: newUser.image };
   } catch (error) {
     console.error(error);
@@ -148,3 +147,6 @@ export const generateTeam = async () => {
   }
   return randomPokemon;
 };
+export const revalidateLayout = async() => {
+  revalidatePath("home", "layout")
+}

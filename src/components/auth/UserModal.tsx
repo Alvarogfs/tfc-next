@@ -15,7 +15,7 @@ import { FC, useRef, useState } from "react";
 import Image from "next/image";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faImage } from "@fortawesome/free-regular-svg-icons";
-import { editUser } from "@/utils/actions";
+import { editUser, revalidateLayout } from "@/utils/actions";
 import { useI18n } from "@/locales/client";
 
 const UserModal: FC<{ user?: User }> = ({ user }) => {
@@ -34,7 +34,7 @@ const UserModal: FC<{ user?: User }> = ({ user }) => {
   const updateUser = async() => {
     const newUser = await editUser(name, preview ? { content: preview, name: imageName } : undefined);
     await session.update(newUser)
-    router.refresh()
+    await revalidateLayout()
     onCloseModal()
   };
   const changeImage = async () => {
